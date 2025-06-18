@@ -1,25 +1,20 @@
 const express = require('express');
-const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-
+const cors = require('cors');            // ← add this
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// ─── MIDDLEWARE ──────────────────────────────────────────────────────────
+app.use(cors());                          // ← add this line
 app.use(express.json());
 
-const db = new sqlite3.Database('./wms.db', (err) => {
-  if (err) return console.error('Database error:', err.message);
-  console.log('Connected to SQLite database.');
-});
-
-// Simple test route
+// ─── ROUTES ──────────────────────────────────────────────────────────────
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Hello from the WMS backend!' });
 });
 
-// Start server
+// (You’ll add your authRoutes and inventory routes later)
+
+// ─── START SERVER ────────────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
