@@ -1,20 +1,23 @@
 const express = require('express');
-const cors = require('cors');            // ← add this
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ─── MIDDLEWARE ──────────────────────────────────────────────────────────
-app.use(cors());                          // ← add this line
+app.use(cors());
 app.use(express.json());
 
-// ─── ROUTES ──────────────────────────────────────────────────────────────
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Hello from the WMS backend!' });
+// ─── ROUTE IMPORTS ─────────────────────────────────────────────────────────
+const authRoutes = require('./routes/auth');
+const inventoryRoutes = require('./routes/inventory');  // ← ADD THIS
+
+// ─── ROUTE MOUNTING ────────────────────────────────────────────────────────
+app.use('/api', authRoutes);
+app.use('/api', inventoryRoutes);                         // ← AND THIS
+
+app.get('/', (req, res) => {
+  res.send('Ravago WMS Backend is Live!');
 });
 
-// (You’ll add your authRoutes and inventory routes later)
-
-// ─── START SERVER ────────────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
